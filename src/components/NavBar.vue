@@ -1,69 +1,45 @@
 <template>
-    <section class="nav-wrapper">
-        <div class="navbar">
+    <section class="fixed left-0 right-0 bottom-0">
+        <div class="duration-300 w-full md:w-8/12  lg:w-4/12 mx-auto px-6 py-2.5 bg-white flex justify-between nav-shadow ">
             <template v-for="(menu, index) in menus" :key="index">
-                <div @click="activeMenu = menu.name">
-                    <i v-if="activeMenu !== menu.name" :class="menu.icon" class="duration-300 text-gray-500"></i>
-                    <span class="duration-300 flex justify-center duration-300 flex-wrap" v-else>
-                        <p class="text-xxs text-green-400 w-full text-center">{{ menu.name }}</p>
-                        <i class="text-xxxxs text-green-400 fa fa-circle"></i>
-                    </span>
-                </div>
+                <router-link :to="menu.id">
+                    <i :class="menu.icon + [this.$route.name === menu.id ? ' text-green-400' : ' text-gray-500']" class="duration-300"></i>
+                </router-link>
             </template>
         </div>
     </section>
 </template>
 
-<script>
-import { ref, onMounted } from 'vue'
-
-export default {
+<script>export default {
     name: 'NavBar',
-    setup(props) {
+    setup() {
         const menus = [{
-                name: 'Home',
+                id: 'map',
+                icon: 'fa fa-map'
+            },{
+                id: 'calendar',
+                icon: 'fa fa-calendar-day'
+            },{
+                id: 'home',
                 icon: 'fa fa-home'
             },{
-                name: 'Search',
+                id: 'search',
                 icon: 'fa fa-search'
             },{
-                name: 'Bookmark',
-                icon: 'far fa-bookmark'
-            },{
-                name: 'Profile',
+                id: 'profile',
                 icon: 'far fa-user'
             }
         ];
 
-        //Handler for active menu
-        const activeMenu = ref('Home')
-
-        const isSubmited = ref(false);
-        const onSubmit = () => {
-            isSubmited.value = true;
-        }
-
-        onMounted(() => console.log('component mounted'));
-
-        console.log(props);
-
-        // template에 전달한다.
         return {
-            isSubmited,
-            onSubmit,
-            menus,
-            activeMenu
+            menus
         }
     }
 }
 </script>
 
 <style scoped>
-   .nav-wrapper {
-      @apply fixed left-0 right-0 bottom-0;
+   .nav-shadow {
       box-shadow: -3px 3px 12px whitesmoke;
-   }
-   .navbar {
-      @apply duration-300 w-full md:w-8/12  lg:w-4/12 mx-auto px-6 py-4 bg-white flex justify-between;
    }
 </style>

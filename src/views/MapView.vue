@@ -1,12 +1,12 @@
 <template>
   <div>
-    View
+    Map
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'ViewView'
+  name: 'MapView'
 }
 </script>

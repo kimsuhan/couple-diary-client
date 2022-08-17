@@ -1,36 +1,43 @@
 <template>
-    <section class="px-6 py-5">
-        <!-- Location -->
-        <div class="text-gray-400 flex items-center gap-2">
-            Home
+    <section class="px-3 py-2 pb-[108px]">
+        <div class="grid grid-cols-2 gap-2">
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/536"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/535/354"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/534/353"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/533/352"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/532/100"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/531/300"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/530/301"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/599/311"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/535/354"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/534/353"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/533/352"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/532/100"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/531/300"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/530/301"></PreviewCard>
+            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/599/311"></PreviewCard>
         </div>
     </section>
-    <NavBar/>
 </template>
 
 <script>
-import NavBar from '../components/NavBar';
+import PreviewCard from '@/components/PreviewCard.vue';
 
 export default {
-  name: 'HomeView'
-  , components: {NavBar}
+    name: 'HomeView',
+    components: {
+        PreviewCard,
+    },
+    setup() {
+        const items = [{
+            width:100,
+            height:100,
+            id:'abcd'
+        }];
+
+        return {
+            items
+        }
+    },
 }
 </script>
-
-<style scoped>
-   .text-xxs {
-      font-size: .75rem;
-   }
-   .text-xxxs {
-      font-size: .55rem;
-   }
-   .category-wrapper, .card-wrapper {
-      @apply flex gap-3 overflow-scroll;
-   }
-   .category {
-      @apply bg-gray-100 duration-300 px-3 py-1 rounded-xl text-green-500 text-xs font-medium;
-   }
-   .active {
-      @apply bg-green-400 text-gray-50;
-   }
-</style>
