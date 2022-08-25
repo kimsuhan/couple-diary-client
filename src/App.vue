@@ -3,6 +3,7 @@
     <router-view></router-view>
 </div>
 <NavBar v-if="navShow(this.$route.name) === true"></NavBar>
+<notifications position="top right" class="mt-1" />
 </template>
 
 <script>
