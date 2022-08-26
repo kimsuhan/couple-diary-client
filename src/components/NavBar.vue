@@ -23,11 +23,11 @@
                 id: 'home',
                 icon: 'fa fa-home'
             },{
-                id: 'search',
-                icon: 'fa fa-search'
+                id: 'add',
+                icon: 'fa fa-square-plus'
             },{
                 id: 'profile',
-                icon: 'far fa-user'
+                icon: 'fa fa-user'
             }
         ];
 

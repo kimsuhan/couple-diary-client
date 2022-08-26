@@ -16,7 +16,7 @@ export default {
     },
     methods: {
         navShow : (currentPath) => {
-            if(currentPath === 'home' || currentPath === 'search' || currentPath === 'map' || currentPath === 'calendar' || currentPath === 'profile') {
+            if(currentPath === 'home' || currentPath === 'add' || currentPath === 'map' || currentPath === 'calendar' || currentPath === 'profile') {
                 return true;
             } else {
                 return false;

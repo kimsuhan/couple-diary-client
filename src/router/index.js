@@ -5,9 +5,10 @@ import Home from '../views/HomeView.vue'
 import Calendar from '../views/CalendarView.vue'
 import Map from '../views/MapView.vue';
 import Profile from '../views/ProfileView.vue';
-import Search from '../views/SearchView.vue';
+import DiaryAdd from '../views/DiaryAddView.vue';
 import Login from '../views/LoginView.vue';
 import Register from '../views/RegisterView.vue';
+import Diary from '../views/DiaryView.vue';
 
 //Routes
 const routes = [{
@@ -28,9 +29,9 @@ const routes = [{
 		path: '/profile',
 		component: Profile
 	},{
-		name: 'search',
-		path: '/search',
-		component: Search
+		name: 'add',
+		path: '/add',
+		component: DiaryAdd
 	},{
 		name: 'login',
 		path: '/login',
@@ -39,6 +40,10 @@ const routes = [{
 		name: 'register',
 		path: '/register',
 		component: Register
+	},{
+		name: 'diary',
+		path: '/diary',
+		component: Diary
 	}
 ]
 

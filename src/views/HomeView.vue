@@ -1,27 +1,15 @@
 <template>
     <section class="px-3 py-2 pb-[108px]">
         <div class="grid grid-cols-2 gap-2">
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/536"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/535/354"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/534/353"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/533/352"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/532/100"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/531/300"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/530/301"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/599/311"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/535/354"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/534/353"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/533/352"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/532/100"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/531/300"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/530/301"></PreviewCard>
-            <PreviewCard date="2020-01-02" thumbnail="https://picsum.photos/599/311"></PreviewCard>
+            <PreviewCard :date="item.DIARY_DATE" :thumbnail="item.PHOTO_SRC" v-for="item in diaryData" v-bind:key="item.diary_no"></PreviewCard>
         </div>
     </section>
 </template>
 
 <script>
 import PreviewCard from '@/components/PreviewCard.vue';
+import axios from '@/utils/axios.js';
+import { ref } from 'vue';
 
 export default {
     name: 'HomeView',
@@ -29,14 +17,17 @@ export default {
         PreviewCard,
     },
     setup() {
-        const items = [{
-            width:100,
-            height:100,
-            id:'abcd'
-        }];
+        let cnt = ref(0);
+        let diaryData = ref([]);
+
+                axios.getData('/v1/diary').then((data) => {
+                    diaryData.value = data.data;
+                    console.log(diaryData.value);
+                });
 
         return {
-            items
+            diaryData,
+            cnt
         }
     },
 }
