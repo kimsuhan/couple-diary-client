@@ -1,6 +1,5 @@
 <style scoped>
    .bottom-sheets {
-      @apply p-6 w-full relative rounded-t-xl bg-white;
       animation: bottom-sheets .45s ease-in-out forwards;
       transform: translateY(-10%);
    }
@@ -29,10 +28,9 @@
          </span>
       </div>
       <!-- Bottom sheets -->
-      <div class="bottom-sheets">
+      <div class="bottom-sheets p-6 w-full relative rounded-t-xl bg-white">
          <!-- Button heart -->
          <span class="absolute right-6 -top-4 bg-white px-2 py-1 rounded-full shadow">
-            <i class="fa fa-image duration-300" @click="this.$refs.fileInput.click()" @if="viewData.state === 'C'"/>
             <!-- <i
             @click="isHeartClicked = !isHeartClicked"
             :class="isHeartClicked ? 'fas' : 'far'"
@@ -72,36 +70,17 @@ import { toRef, reactive } from 'vue'
 
    export default {
       name: 'DiaryView',
+      props: ["diaryNo"],
       setup(props) {
          const diaryNo = toRef(props, 'diaryNo');
          const viewData = reactive({
-            state: '',
             fileData: '',
          });
 
-         if(diaryNo.value === undefined) {
-            viewData.state = 'C';
-         }
-
-         const pickFile = (file) => {
-            if (file && file[0]) {
-               let reader = new FileReader();
-               reader.onload = (e) => {
-                  console.log('a');
-                  console.log(e);
-                  viewData.fileData = e.target.result
-               }
-               reader.readAsDataURL(file[0])
-            }
-
-            // reader.readAsDataURL(file[0])
-            //    this.$emit('input', file[0])
-            // }
-         }
+         console.log(diaryNo);
 
          return {
-            viewData,
-            pickFile
+            viewData
          }
       }
    }
