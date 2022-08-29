@@ -10,8 +10,8 @@
         </div>
     </nav> -->
     <section class="px-3 py-2 pb-[108px]">
-        <div class="grid grid-cols-2 gap-2">
-            <PreviewCard :date="item.DIARY_DATE" :thumbnail="item.PHOTO_SRC" :diaryNo="item.DIARY_NO" v-for="item in diaryData" v-bind:key="item.DIARY_NO"></PreviewCard>
+        <div class="grid grid-cols-2 gap-1">
+            <PreviewCard :diary="item" v-for="item in diaryData" v-bind:key="item.DIARY_NO"></PreviewCard>
         </div>
     </section>
 </template>

@@ -1,20 +1,20 @@
 <template>
-    <router-link :to="{ name: 'diary', params: { diaryNo: diaryNo }}" class="flex rounded-xl relative overflow-hidden">
-        <!-- <div class="flex rounded-xl relative overflow-hidden"> -->
-        <img class="card-image" :src="'v1/file/' + thumbnail"/>
-        <div class="px-1.5 py-0.5 absolute w-full bottom-0 text-right">
-            <p class="text-[12px] text-white date-border mb-0">{{date}}</p>
+        <div class="flex flex-col overflow-hidden border">
+            <router-link :to="{ name: 'diary', params: { diaryNo: diary.DIARY_NO }}" class="bg-white grow">
+                <img  :src="'v1/file/' + diary.PHOTO_SRC" class="p-1 h-auto "/>
+            </router-link>
+            <div class="flex bg-white text-black w-full px-1">
+                <label class="text-[13px] grow">{{diary.DIARY_DATE}}</label>
+                <label class="text-[13px]">D-{{diary.DDAY}}</label>
+            </div>
         </div>
-        <!-- </div> -->
-    </router-link>
 </template>
 
 <script>
 export default {
     name:'PreviewCard',
-    props: ['date', 'thumbnail', 'diaryNo'],
+    props: ['diary'],
     setup() {
-
     },
 }
 </script>

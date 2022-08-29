@@ -39,7 +39,7 @@
                <strong class="mb-1 w-full flex items-center gap-2">
                   <h1>{{diaryData.DIARY_TITLE}}</h1>
                </strong>
-               <!-- <p class="text-xs text-gray-400">인천광역시, 어쩌고저쩌고</p> -->
+               <p class="text-xs text-gray-400">{{diaryData.DDAY}}일</p>
             </span>
 
             <!-- rating -->
@@ -50,7 +50,7 @@
          <!-- Description -->
          <div class="mt-5">
             <!-- <p class="font-medium text-sm">Description</p> -->
-            <p class="text-xs text-gray-500">
+            <p class="text-xs text-gray-500" style="white-space:pre-line">
                {{diaryData.DIARY_CONTENT}}
             </p>
          </div>
