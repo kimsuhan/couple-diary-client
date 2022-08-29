@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 //import views component
 import Home from '../views/HomeView.vue'
 import Calendar from '../views/CalendarView.vue'
-import Map from '../views/MapView.vue';
+import Letter from '../views/LetterView.vue';
 import Profile from '../views/ProfileView.vue';
 import DiaryAdd from '../views/DiaryAddView.vue';
 import Login from '../views/LoginView.vue';
@@ -21,9 +21,9 @@ const routes = [{
 		path: '/calendar',
 		component: Calendar
 	},{
-		name: 'map',
-		path: '/map',
-		component: Map
+		name: 'letter',
+		path: '/letter',
+		component: Letter
 	},{
 		name: 'profile',
 		path: '/profile',

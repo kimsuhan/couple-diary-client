@@ -1,5 +1,5 @@
 <template>
-<div class="pb-[65px]">
+<div>
     <router-view></router-view>
 </div>
 <NavBar v-if="navShow(this.$route.name) === true"></NavBar>
@@ -16,7 +16,7 @@ export default {
     },
     methods: {
         navShow : (currentPath) => {
-            if(currentPath === 'home' || currentPath === 'add' || currentPath === 'map' || currentPath === 'calendar' || currentPath === 'profile') {
+            if(currentPath === 'home' || currentPath === 'add' || currentPath === 'letter' || currentPath === 'calendar' || currentPath === 'profile') {
                 return true;
             } else {
                 return false;

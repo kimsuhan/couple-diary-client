@@ -9,8 +9,8 @@
             </div>
         </div>
     </nav> -->
-    <section class="px-3 py-2 pb-[108px]">
-        <div class="grid grid-cols-2 gap-1">
+    <section class="px-3 py-2">
+        <div class="grid grid-cols-2 gap-1 pb-[65px]">
             <PreviewCard :diary="item" v-for="item in diaryData" v-bind:key="item.DIARY_NO"></PreviewCard>
         </div>
     </section>

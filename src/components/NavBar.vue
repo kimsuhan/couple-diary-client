@@ -14,7 +14,7 @@
     name: 'NavBar',
     setup() {
         const menus = [{
-                id: 'map',
+                id: 'letter',
                 icon: 'fa fa-envelope'
             },{
                 id: 'calendar',
