@@ -13,10 +13,10 @@
    }
 </style>
 <template>
-	<section>
+	<section v-if="diaryData !== undefined">
       <!-- Cover image -->
       <div class="relative">
-         <img :src="'/v1/file/' + diaryData.PHOTO_SRC" class="w-full" v-if="diaryData.PHOTO_SRC !== undefined"/>
+         <img :src="'/v1/file/' + diaryData.PHOTO_SRC" class="w-full"/>
          <span class="fixed left-0 right-0 top-0 px-6">
             <router-link to="home">
             <div class="w-full md:w-8/12 lg:w-4/12 mx-auto py-4">
@@ -67,7 +67,7 @@ export default {
     name: 'DiaryView',
     props: ["diaryNo"],
     setup(props) {
-      let diaryData = ref({});
+      let diaryData = ref();
 
         onBeforeMount(() => {
             axios.getData(`/v1/diary/${props.diaryNo}`).then((data) => {

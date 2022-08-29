@@ -15,7 +15,7 @@
     setup() {
         const menus = [{
                 id: 'map',
-                icon: 'fa fa-list'
+                icon: 'fa fa-envelope'
             },{
                 id: 'calendar',
                 icon: 'fa fa-calendar-day'
