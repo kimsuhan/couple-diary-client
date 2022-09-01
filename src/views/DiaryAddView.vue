@@ -35,7 +35,7 @@
         </div>
     </Transition>
 
-<input ref="fileInput" class="form-control hidden" type="file" id="formFile" v-on:change="pickFile(this.$refs.fileInput.files)"/>
+<input ref="fileInput" class="form-control hidden" type="file" id="formFile" multiple='multiple' accept='image/*' v-on:change="pickFile(this.$refs.fileInput.files)"/>
 	<section class="">
         <!-- Cover image -->
         <div class="relative">
@@ -76,10 +76,11 @@ export default {
             content:'',
             date:'',
             image:'',
-            popupShow: false,
+            popupShow: false
         });
 
         const pickFile = (file) => {
+            console.log(file);
             if (file && file[0]) {
                 let reader = new FileReader();
                 reader.onload = (e) => {
@@ -87,7 +88,7 @@ export default {
                 }
 
                 reader.readAsDataURL(file[0]);
-                viewData.image = file[0];
+                viewData.image = file;
             }
          }
 
@@ -105,13 +106,18 @@ export default {
                 notify({type: 'error', text: '내용을 입력해주세요.'});
                 return;
             }
-            if(viewData.image === '') {
+            if(viewData.image === '' || viewData.image.length === 0) {
                 notify({type: 'error', text: '사진을 첨부해주세요.'});
                 return;
             }
 
             let formData = new FormData();
-            formData.append('image',viewData.image);
+            for (let index = 0; index < viewData.image.length; index++) {
+                let file = viewData.image[index];
+                formData.append("image", file);
+            }
+
+            // formData.append('image',viewData.image);
             formData.append('title',viewData.title);
             formData.append('content',viewData.content);
             formData.append('date',viewData.date);
@@ -132,6 +138,8 @@ export default {
             viewData.date = '';
             viewData.image = '';
             viewData.popupShow = false;
+
+            window.scrollTo(0, 0);
          }
 
          return {

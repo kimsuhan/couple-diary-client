@@ -49,6 +49,21 @@ const routes = [{
 ]
 
 //Init router
-const router = createRouter({ history: createWebHashHistory(), routes })
+const router = createRouter({
+	history: createWebHashHistory(),
+	routes,
+	scrollBehavior(to, from, savedPosition) {
+		if(savedPosition) {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					resolve(savedPosition || {top : 0})
+				}, 1000)
+			})
+		}
+		else {
+			return {top:0}
+		}
+	}
+})
 
 export default router

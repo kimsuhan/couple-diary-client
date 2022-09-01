@@ -20,8 +20,6 @@ import Notifications from '@kyvg/vue3-notification'
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3000';
 
-import 'video.js/dist/video-js.css'
-
 const app = createApp(App);
 app.config.globalProperties.axios = axios;
 app.use(router);

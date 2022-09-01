@@ -99,8 +99,7 @@
 <script>
 import { reactive } from 'vue'
 import { notify } from "@kyvg/vue3-notification";
-import { useFetch } from '../utils/fetch.js';
-
+import axios from '@/utils/axios.js';
 
 export default {
   name: 'RegisterView',
@@ -159,14 +158,9 @@ export default {
             return;
         }
 
-        // 중복 ID 체크
-        const {data, error} = await useFetch(`/v1/user/${registerData.id}`);
 
-        if(error.value) {
-            notify({type: 'error', text: error.value});
-            return;
-        }
-        else if(data.value) {
+        const data = await axios.getData(`/v1/user/${registerData.id}`);
+        if(data.status === 200) {
             notify({type: 'error', text: '⚠️ 중복된 아이디입니다.'});
             return;
         }
