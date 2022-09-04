@@ -1,18 +1,23 @@
 <template>
-    <nav class="navbar bg-light mb-3">
-        <div class="py-0 my-0 container-fluid">
-            <a class="navbar-brand">회원가입</a>
-            <div class="flex gap-1">
-                <span class="badge rounded-pill" :class="' text-bg-' + (viewData.steps === 1 ? 'primary' : 'secondary')">1</span>
-                <span class="badge rounded-pill" :class="' text-bg-' + (viewData.steps === 2 ? 'primary' : 'secondary')">2</span>
-                <span class="badge rounded-pill" :class="' text-bg-' + (viewData.steps === 3 ? 'primary' : 'secondary')">3</span>
-            </div>
+
+    <div class="fixed h-[50px] bg-white flex flex-row items-center w-screen shadow-sm">
+        <div class="flex-1 px-3 font-medium text-xl">
+            회원가입
         </div>
-    </nav>
-    <div class="flex justify-center">
+
+        <button class="flex-none px-3">
+            <div class="flex flex-row justify-center items-center gap-1">
+                <span class="badge rounded-pill h-6 w-6 items-center text-center flex" :class="' text-bg-' + (viewData.steps === 1 ? 'primary' : 'secondary')">1</span>
+                <span class="badge rounded-pill h-6 w-6 items-center text-center flex" :class="' text-bg-' + (viewData.steps === 2 ? 'primary' : 'secondary')">2</span>
+                <span class="badge rounded-pill h-6 w-6 items-center text-center flex" :class="' text-bg-' + (viewData.steps === 3 ? 'primary' : 'secondary')">3</span>
+            </div>
+        </button>
+    </div>
+
+    <div class="flex justify-center bg-white h-screen pt-[70px]">
 
         <!-- Step 1 -->
-        <div class="w-screen px-4" v-show="viewData.steps === 1">
+        <div class="flex flex-col" v-show="viewData.steps === 1">
             <label for="idInput" class="mb-0 form-label text-xs">ID</label>
             <input type="text" class="form-control h-6 mb-2" id="idInput" v-model="registerData.id">
 

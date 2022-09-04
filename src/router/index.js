@@ -9,6 +9,7 @@ import DiaryAdd from '../views/DiaryAddView.vue';
 import Login from '../views/LoginView.vue';
 import Register from '../views/RegisterView.vue';
 import Diary from '../views/DiaryView.vue';
+import DiaryDetail from '../views/DiaryDetailView.vue';
 
 //Routes
 const routes = [{
@@ -45,6 +46,10 @@ const routes = [{
 		path: '/diary',
 		component: Diary,
 		props:true,
+	},{
+		name: 'detail',
+		path: '/detail',
+		component: DiaryDetail,
 	}
 ]
 

@@ -1,12 +1,8 @@
 <template>
-    <div class="flex flex-col overflow-hidden border">
-        <router-link :to="{ name: 'diary', params: { diaryNo: diary.DIARY_NO }}" class="bg-white grow flex justify-center">
-            <img :src="'v1/file/' + diary.PHOTO_SRC" class="p-1 h-auto object-contain"/>
+    <div class="flex flex-col overflow-hidden">
+        <router-link :to="{ name: 'diary', params: { diaryId: diary._id }}" class="bg-white grow flex justify-center">
+            <img :src="'v1/file/' + diary.photos[0].src" class="h-auto object-cover"/>
         </router-link>
-        <div class="flex bg-white text-black w-full px-1">
-            <label class="text-[13px] grow">{{diary.DIARY_DATE}}</label>
-            <label class="text-[13px]">D-{{diary.DDAY}}</label>
-        </div>
     </div>
 </template>
 

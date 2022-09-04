@@ -1,20 +1,19 @@
 <template>
-    <div class="flex justify-center">
+    <div class="flex bg-white h-screen">
         <div class="grid gap-3">
             <div class="flex justify-center logo-8 my-10">
-                <h3 class="text-green-600">Couple Diary</h3>
+                <h3 class="text-red-600">Couple Diary</h3>
             </div>
 
             <div class="flex flex-wrap px-4 gap-3">
-                <div class="w-[100%]">
                     <label for="idInput" class="mb-0 form-label text-xs">ID</label>
                     <input type="text" class="form-control h-6" id="idInput">
-                </div>
 
-                <div class="w-[100%]">
+
+                <!-- <div class="w-[100%]"> -->
                     <label for="passwordInput" class="mb-0 form-label text-xs ">Password</label>
                     <input type="password" class="form-control h-6" id="passwordInput">
-                </div>
+                <!-- </div> -->
 
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="rememberMeCheck">
@@ -28,7 +27,7 @@
                 <div class="text-center w-[100%]">
                     <p class="text-xs">Not a member?
                         <router-link to="register">
-                            <a class="text-xs">Register</a>
+                            <a class="text-xs text-blue-500">Register</a>
                         </router-link>
                     </p>
                 </div>
