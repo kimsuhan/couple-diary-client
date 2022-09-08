@@ -3,8 +3,13 @@ import axios from '@/utils/axios.js';
 export const Diary = {
     namespaced: true,
     state: () => ({
-        data:[{}]
+        data:[]
     }),
+    getters: {
+        getData(state) {
+            return state.data;
+        }
+    },
     mutations: {
         setData(state, value) {
             state.data = value;
@@ -13,8 +18,7 @@ export const Diary = {
     actions: {
         getServerData(context) {
             axios.getData('/v1/diary').then((data) => {
-                context.commit()
-                diaryData.value = data.data;
+                context.commit('setData', data.data);
             });
         }
     }

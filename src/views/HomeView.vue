@@ -31,8 +31,8 @@
 
 <script>
 import PreviewCard from '@/components/PreviewCard.vue';
-import axios from '@/utils/axios.js';
-import { ref } from 'vue';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
     name: 'HomeView',
@@ -40,16 +40,12 @@ export default {
         PreviewCard,
     },
     setup() {
-        let cnt = ref(0);
-        let diaryData = ref([]);
-
-        axios.getData('/v1/diary').then((data) => {
-            diaryData.value = data.data;
-        });
+        const store = useStore();
+        store.dispatch("Diary/getServerData");
+        const diaryData = computed(() => store.getters['Diary/getData']);
 
         return {
-            diaryData,
-            cnt
+            diaryData
         }
     },
 }

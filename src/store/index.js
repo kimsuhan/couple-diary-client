@@ -1,7 +1,6 @@
 import { createStore } from 'vuex';
-import { Counter } from '@/store/Counter';
-import { moduleA } from '@/store/moduleA';
+import { Diary } from '@/store/Diary';
 
 export default createStore({
-   modules: { Counter, moduleA }
+   modules: { Diary }
 })
