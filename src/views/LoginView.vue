@@ -1,38 +1,38 @@
 <template>
-    <div class="flex bg-white h-screen">
-        <div class="grid gap-3">
-            <div class="flex justify-center logo-8 my-10">
-                <h3 class="text-red-600">Couple Diary</h3>
+    <div class="bg-white h-screen flex flex-col justify-center content-center items-center text-center">
+        <!-- <div class="grid gap-3"> -->
+            <div>
+                <img class="w-32 " src="@/assets/diary.png" />
+            </div>
+            <div class="logo-8 mb-10 mt-3">
+                <h3 class="cdiary-font-color cdiary-font-family">Couple Diary</h3>
             </div>
 
-            <div class="flex flex-wrap px-4 gap-3">
-                    <label for="idInput" class="mb-0 form-label text-xs">ID</label>
-                    <input type="text" class="form-control h-6" id="idInput">
+            <div class="input-group mb-3 px-4">
+                <span class="input-group-text bg-white" id="basic-addon1"><i class="fa fa-user text-gray-400"></i></span>
+                <input type="text" class="form-control text-sm" placeholder="아이디" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
 
+            <div class="input-group mb-3 px-4">
+                <span class="input-group-text bg-white" id="basic-addon2"><i class="fa fa-lock text-gray-400"></i></span>
+                <input type="password" class="form-control  text-sm" placeholder="비밀번호" aria-label="Password" aria-describedby="basic-addon2">
+            </div>
 
-                <!-- <div class="w-[100%]"> -->
-                    <label for="passwordInput" class="mb-0 form-label text-xs ">Password</label>
-                    <input type="password" class="form-control h-6" id="passwordInput">
-                <!-- </div> -->
+            <div class="input-group mb-3 px-4">
+                <button class="form-control btn btn-primary border-0 cdiary-bg-color"> 로그인 </button>
+            </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="rememberMeCheck">
-                    <label class="text-xs form-check-label" for="rememberMeCheck">
-                        Remember Me
-                    </label>
-                </div>
-
-                <button type="button" class="btn btn-primary btn-block w-[100%] mt-4" style="font-size:20px">Login</button>
-
-                <div class="text-center w-[100%]">
-                    <p class="text-xs">Not a member?
-                        <router-link to="register">
-                            <a class="text-xs text-blue-500">Register</a>
-                        </router-link>
-                    </p>
+            <div class="input-group mb-3 px-4">
+                <div class="flex flex-row justify-center items-center w-full gap-2">
+                    <a class="text-gray-400 text-sm">아이디 찾기</a>
+                    <div class="w-[0.5px] h-5 bg-gray-500"></div>
+                    <a class="text-gray-400 text-sm">비밀번호 찾기</a>
+                    <div class="w-[0.5px] h-5 bg-gray-500"></div>
+                    <router-link to="register" class="text-gray-400 text-sm">
+                        회원 가입
+                    </router-link>
                 </div>
             </div>
-        </div>
     </div>
 </template>
 
@@ -42,14 +42,3 @@ export default {
     name: 'LoginView'
 }
 </script>
-
-<style scoped>
-/* Logo-8 */
-.logo-8 h3 {
-    font-family: 'Cinzel', serif;
-    /* color: #e74c3c; */
-    font-weight: 300;
-    font-size: 30px;
-    line-height:1.3;
-}
-</style>

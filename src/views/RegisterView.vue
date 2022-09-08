@@ -1,85 +1,70 @@
 <template>
+    <div class="h-[50px] bg-white flex shadow-sm fixed top-0 w-screen items-center justify-center" style="z-index: 1;">
 
-    <div class="fixed h-[50px] bg-white flex flex-row items-center w-screen shadow-sm">
-        <div class="flex-1 px-3 font-medium text-xl">
-            회원가입
+        <router-link to="login" class="absolute left-0 pl-4">
+            <i class="fa fa-chevron-left"></i>
+        </router-link>
+        <div class="text-center">
+            <div class="text-xs cdiary-font-color cdiary-font-family">Couple Diary</div>
+            <div class="">회원 가입</div>
         </div>
-
-        <button class="flex-none px-3">
-            <div class="flex flex-row justify-center items-center gap-1">
-                <span class="badge rounded-pill h-6 w-6 items-center text-center flex" :class="' text-bg-' + (viewData.steps === 1 ? 'primary' : 'secondary')">1</span>
-                <span class="badge rounded-pill h-6 w-6 items-center text-center flex" :class="' text-bg-' + (viewData.steps === 2 ? 'primary' : 'secondary')">2</span>
-                <span class="badge rounded-pill h-6 w-6 items-center text-center flex" :class="' text-bg-' + (viewData.steps === 3 ? 'primary' : 'secondary')">3</span>
-            </div>
-        </button>
     </div>
 
-    <div class="flex justify-center bg-white h-screen pt-[70px]">
-
-        <!-- Step 1 -->
-        <div class="flex flex-col" v-show="viewData.steps === 1">
-            <label for="idInput" class="mb-0 form-label text-xs">ID</label>
-            <input type="text" class="form-control h-6 mb-2" id="idInput" v-model="registerData.id">
-
-            <label for="passwordInput" class="mb-0 form-label text-xs">Password</label>
-            <input type="password" class="form-control h-6 mb-2" id="passwordInput" v-model="registerData.password">
-
-            <label for="passwordCheckInput" class="mb-0 form-label text-xs">Password Check</label>
-            <input type="password" class="form-control h-6 mb-2" id="passwordCheckInput" v-model="referenceData.passwordCheck">
-
-            <label for="nameInput" class="mb-0 form-label text-xs">Name</label>
-            <input type="text" class="form-control h-6 mb-2" id="nameInput" v-model="registerData.name">
-
-            <label for="birthDayInput" class="mb-0 form-label text-xs">BirthDay</label>
-            <input type="date" class="form-control h-6 text-xs" id="BirthDayInput" v-model="registerData.birthDay"/>
-
-            <button class="btn btn-primary btn-sm form-control mt-3" @click="stepOneNext()">
-                Next
-            </button>
+    <form class="bg-white h-screen px-4 pt-[70px]" @submit.prevent="register">
+        <div class="mb-3">
+            <label for="inputID" class="form-label text-sm">아이디</label>
+            <input type="text" class="form-control" id="inputID" v-model="registerData.id" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="inputPassword" class="form-label text-sm">비밀번호</label>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" aria-describedby="inputPassword" v-model="registerData.password" required>
+                <span class="input-group-text bg-white" id="inputPassword">
+                    <i class="fa fa-lock"></i>
+                </span>
+            </div>
         </div>
 
-        <!-- Step 2 -->
-        <div class="w-screen px-4" v-show="viewData.steps === 2">
-            <div v-show="referenceData.hasCoupleId === true">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control text-xs" placeholder="커플 ID를 입력해주세요.">
-                    <button class="btn btn-outline-secondary text-xs" id="button-addon2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="fa-solid fa-search text-xs"></i>
-                    </button>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-xs">커플 ID가 없으신가요?
-                        <a class="text-xs text-blue-500" @click="referenceData.hasCoupleId = !referenceData.hasCoupleId">커플등록하기</a>
-                    </p>
-                </div>
+        <div class="mb-3">
+            <label for="inputPasswordCheck" class="form-label text-sm">비밀번호 확인</label>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" aria-describedby="inputPasswordCheck" v-model="referenceData.passwordCheck" required>
+                <span class="input-group-text bg-white" id="inputPasswordCheck">
+                    <i class="fa fa-check"></i>
+                </span>
             </div>
+        </div>
 
-            <div v-show="referenceData.hasCoupleId === false">
-                <label for="startDateInput" class="mb-0 form-label text-xs">시작일</label>
-                <input type="date" class="form-control h-6 text-xs" id="StartDayInput" v-model="registerData.coupleStartDate"/>
+        <div class="mb-3">
+            <label for="inputName" class="form-label text-sm">이름</label>
+            <input type="text" class="form-control" id="inputName" v-model="registerData.name" required>
+        </div>
 
-                <button class="btn btn-primary btn-sm form-control my-3" @click="stepTwoNext()">
-                    Next
+        <div class="mb-3">
+            <label for="inputBirthday" class="form-label text-sm">생년월일</label>
+            <input type="date" class="form-control" id="inputBirthday" v-model="registerData.birthday" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="inputCoupleId" class="form-label text-sm">커플 ID</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="상대방의 커플 ID를 입력해주세요." v-model="registerData.couple_id" v-bind:disabled="referenceData.hasCoupleId">
+                <button class="btn btn-secondary cdiary-bg-color border-0" type="button" id="inputCoupleId" data-bs-toggle="modal" data-bs-target="#exampleModal" v-bind:disabled="referenceData.hasCoupleId">
+                    <i class="fa fa-search"></i>
                 </button>
+            </div>
 
-                <div class="text-center">
-                    <p class="text-xs">커플 ID가 생각나셨나요?
-                        <a class="text-xs text-blue-500" @click="referenceData.hasCoupleId = !referenceData.hasCoupleId">ID 입력하기</a>
-                    </p>
-                </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="referenceData.hasCoupleId" @change="checkHasCoupleId()">
+                <label class="form-check-label" for="flexSwitchCheckDefault">상대방과 연결 없이 시작하겠습니다.</label>
             </div>
         </div>
 
-        <!-- Step 3 -->
-        <div class="grid place-content-center" v-show="viewData.steps === 3">
-            <div class="grid bg-primary w-[150px] h-[150px] rounded-full text-center mx-auto animate-bounce mt-32">
-                <i class="fa fa-check text-5xl my-auto text-white"></i>
-            </div>
-
-            <p class="mx-auto mt-4"> 성공적으로 가입하셨습니다.</p>
+        <div class="input-group mt-5">
+            <button class="form-control btn btn-secondary border-0 cdiary-bg-color" type="submit"> 회원가입 </button>
         </div>
-    </div>
+    </form>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -107,93 +92,49 @@ import { notify } from "@kyvg/vue3-notification";
 import axios from '@/utils/axios.js';
 
 export default {
-  name: 'RegisterView',
-  setup() {
-    // 회원가입 데이터
-    const registerData = reactive({
-        id: '',
-        password: '',
-        name: '',
-        birthDay: '',
-        coupleStartDate: '',
-    });
+    name: 'RegisterView',
+    setup() {
+        // 회원가입 데이터
+        const registerData = reactive({
+            id: '',
+            password: '',
+            name: '',
+            birthday: '',
+            couple_id: undefined,
+        });
 
-    // 참조용 데이터
-    const referenceData = reactive({
-        passwordCheck: '',
-        hasCoupleId: true,
-    })
+        // 참조용 데이터
+        const referenceData = reactive({
+            passwordCheck: '',
+            hasCoupleId: false,
+        });
 
-    // 화면 제어용 데이터
-    const viewData = reactive({
-        steps: 1,
-    });
-
-    // Function Line
-    const stepOneNext = async () => {
-
-        // Validation Check
-        if(registerData.id === '') {
-            notify({type: 'error', text: '⚠️ ID를 입력해주세요.'});
-            return;
+        const register = async () => {
+            await axios.postData('/v1/user/register', registerData).then(response => {
+                if(response.status === 201) {
+                    console.log(response);
+                }
+            }).catch((e) => {
+                if(e.response.data && e.response.data.message) {
+                    notify({type: 'error', text: e.response.data.message});
+                } else {
+                    notify({type: 'error', text: e.message});
+                }
+            });
         }
 
-        if(registerData.password === '') {
-            notify({type: 'error', text: '⚠️ 비밀번호를 입력해주세요.'});
-            return;
+        const checkHasCoupleId = () => {
+            if(referenceData.hasCoupleId) {
+                registerData.couple_id = undefined;
+            }
         }
 
-        if(referenceData.passwordCheck === '') {
-            notify({type: 'error', text: '⚠️ 비밀번호 확인을 입력해주세요.'});
-            return;
+        return {
+            registerData,
+            referenceData,
+            register,
+            checkHasCoupleId,
         }
-
-        if(registerData.password !== referenceData.passwordCheck) {
-            notify({type: 'error', text: '⚠️ 비밀번호를 다시 확인해주세요.'});
-            return;
-        }
-
-        if(registerData.name === '') {
-            notify({type: 'error', text: '⚠️ 이름을 입력해주세요.'});
-            return;
-        }
-
-        if(registerData.birthDay === '') {
-            notify({type: 'error', text: '⚠️ 생일을 입력해주세요.'});
-            return;
-        }
-
-
-        const data = await axios.getData(`/v1/user/${registerData.id}`);
-        if(data.status === 200) {
-            notify({type: 'error', text: '⚠️ 중복된 아이디입니다.'});
-            return;
-        }
-
-        // TODO ID, 비밀번호 최소 규정은 만들기
-
-        viewData.steps++;
-    };
-
-    const stepTwoNext = async () => {
-
-        // Validation Check
-        if(registerData.coupleStartDate === '') {
-            notify({type: 'error', text: '⚠️ 커플 시작일을 입력해주세요.'});
-            return;
-        }
-    };
-
-    return {
-        viewData,
-        registerData,
-        referenceData,
-        stepOneNext,
-        stepTwoNext
     }
-  }
 }
 </script>
-
-<style scoped>
-</style>

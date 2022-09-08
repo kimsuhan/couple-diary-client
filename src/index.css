@@ -12,6 +12,32 @@ body {
 }
 
 /**
+ * Main Color
+ */
+ :root {
+    --main-bg-color: rgb(234 134 146);
+}
+.cdiary-font-color {
+    color: var(--main-bg-color);
+}
+
+.cdiary-bg-color {
+    background-color: var(--main-bg-color);
+}
+
+.cdiary-font-family {
+    font-family: 'Cinzel', serif;
+}
+
+/* Logo-8 */
+.logo-8 h3 {
+    /* color: #e74c3c; */
+    font-weight: 300;
+    font-size: 30px;
+    line-height:1.3;
+}
+
+/**
  * Extracted from: SweetAlert
  * Modified by: Istiak Tridip
  */
