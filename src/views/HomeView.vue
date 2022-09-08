@@ -17,12 +17,12 @@
                     <i class="far fa-heart text-xl"></i>
                 </div>
                 <div class="w-6 h-6 items-center justify-center flex ml-3">
-                    <i class="fa fa-rotate-right text-xl"></i>
+                    <i class="fa fa-rotate-right text-xl" @click="getDiaryData('click')"></i>
                 </div>
             </div>
         </button>
     </div>
-    <section class="px-3 py-2 h-screen bg-white">
+    <section class="px-3 py-2 bg-white">
         <div class="grid grid-cols-3 gap-1 pb-[65px] pt-[50px]">
             <PreviewCard :diary="item" v-for="item in diaryData" v-bind:key="item._id"></PreviewCard>
         </div>
@@ -33,6 +33,7 @@
 import PreviewCard from '@/components/PreviewCard.vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
     name: 'HomeView',
@@ -41,11 +42,21 @@ export default {
     },
     setup() {
         const store = useStore();
-        store.dispatch("Diary/getServerData");
-        const diaryData = computed(() => store.getters['Diary/getData']);
+        let diaryData = computed(() => store.getters['Diary/getData']);
+
+        const getDiaryData = (type) => {
+            store.dispatch("Diary/getServerData");
+
+            if(type === 'click') {
+                notify({type: 'success', text: '다이어리를 불러왔어요.'});
+            }
+        }
+
+        getDiaryData('onload');
 
         return {
             diaryData
+            , getDiaryData
         }
     },
 }
