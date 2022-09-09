@@ -79,7 +79,7 @@
     }
 </style>
 <template>
-    <div class="h-[50px] bg-white flex flex-row items-center shadow-sm fixed top-0 w-screen" style="z-index: 1;">
+    <div class="h-[50px] bg-white flex flex-row items-center shadow-sm fixed top-0 w-screen" style="z-index: 9999999;">
         <div class="flex-none px-3" @click="$router.go(-1)">
             <i class="fa fa-chevron-left"></i>
         </div>
@@ -87,9 +87,20 @@
             <div class="text-xs text-gray-400 font-bold">김수한</div>
             <div class="">{{diaryData.title}}</div>
         </div>
-        <button class="flex-none px-3" data-bs-toggle="modal" data-bs-target="#addonModal">
+        <div class="dropdown">
+        <button class="flex-none px-3" data-bs-toggle="dropdown" aria-expanded="false">
             ...
         </button>
+        <ul class="dropdown-menu">
+            
+            <li>
+                <router-link :to="{ name: 'add', params: { diaryId: diaryId }}" class="dropdown-item">
+                    수정
+                </router-link>
+            </li>
+            <li><a class="dropdown-item text-red-500">삭제 (개발중)</a></li>
+        </ul>
+        </div>
     </div>
 
     <section class="pt-[50px]">
@@ -124,25 +135,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Modal -->
-    <div class="modal fade" id="addonModal" tabindex="-1" aria-labelledby="addonModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="flex flex-col content-center justify-center text-center items-center">
-                        <button class="text-xs pt-2">
-                            수정
-                        </button>
-                        <div class="bg-gray-300 w-[80%] h-[0.1px] my-3"></div>
-                        <button class="text-xs text-red-500 pb-2">
-                            삭제
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 <!-- {{diaryData.date.substr(0, 10)}} -->
 <script>

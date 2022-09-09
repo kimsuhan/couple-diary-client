@@ -10,9 +10,9 @@
 
         <button class="flex-none px-3">
             <div class="flex flex-row justify-center items-center">
-                <div class="border-2 rounded w-5 h-5 border-black items-center justify-center flex">
+                <router-link to="add" class="border-2 rounded w-5 h-5 border-black items-center justify-center flex">
                     <i class="fa fa-plus"></i>
-                </div>
+                </router-link>
                 <div class="w-6 h-6 items-center justify-center flex ml-4">
                     <i class="far fa-heart text-xl"></i>
                 </div>
@@ -48,7 +48,7 @@ export default {
             store.dispatch("Diary/getServerData");
 
             if(type === 'click') {
-                notify({type: 'success', text: '다이어리를 불러왔어요.'});
+                notify({type: 'success', text: '데이터를 불러왔어요.'});
             }
         }
 

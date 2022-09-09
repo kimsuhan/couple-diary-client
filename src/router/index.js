@@ -60,6 +60,7 @@ const routes = [{
 		name: 'add',
 		path: '/add',
 		component: DiaryAdd,
+		props:true,
 		beforeEnter: requireAuth(),
 	},{
 		name: 'login',

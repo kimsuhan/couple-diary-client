@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col overflow-hidden">
         <router-link :to="{ name: 'diary', params: { diaryId: diary._id }}" class="bg-white grow flex justify-center">
-            <img :src="'v1/file/' + diary.photos[0].src" class="h-auto object-cover"/>
+            <img :src="'v1/file/' + (diary.main_src ? diary.main_src : diary.photos[0].src)" class="h-auto object-cover"/>
         </router-link>
     </div>
 </template>

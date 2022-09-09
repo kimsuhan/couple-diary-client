@@ -23,8 +23,8 @@
                 id: 'home',
                 icon: 'fa fa-home'
             },{
-                id: 'add',
-                icon: 'fa fa-square-plus'
+                id: 'login',
+                icon: 'fa fa-warning'
             },{
                 id: 'profile',
                 icon: 'fa fa-user'

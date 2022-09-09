@@ -16,7 +16,6 @@
     </Transition>
 
     <div class="h-[50px] bg-white flex shadow-sm fixed top-0 w-screen items-center justify-center" style="z-index: 999999;">
-
         <router-link to="login" class="absolute left-0 pl-4" ref="backButton">
             <i class="fa fa-chevron-left"></i>
         </router-link>
