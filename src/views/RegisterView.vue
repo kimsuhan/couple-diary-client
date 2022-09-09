@@ -30,27 +30,29 @@
         <div class="mb-3">
             <label for="inputID" class="form-label text-sm">아이디</label>
             <div class="input-group has-validation">
-                <input type="text" class="form-control" id="inputID" v-model="registerData.id" required :class="referenceData.idValid ? 'is-valid' : 'is-invalid'">
+                <input type="text" class="form-control" id="inputID" v-model="registerData.id" required :class="referenceData.formValidCheck ? (referenceData.idValid ? 'is-valid' : 'is-invalid') : ''">
                 <div id="validationServer03Feedback" class="invalid-feedback">
                     영문자로 시작하는 영문자 또는 숫자 6~20자
                 </div>
             </div>
+            <div class="form-text" v-if="!referenceData.formValidCheck">영문자로 시작하는 영문자 또는 숫자 6~20자</div>
         </div>
         
         <div class="mb-3">
             <label for="inputPassword" class="form-label text-sm">비밀번호</label>
             <div class="input-group has-validation">
-                <input type="password" class="form-control" id="inputPassword" v-model="registerData.password" required  :class="referenceData.passwordValid ? 'is-valid' : 'is-invalid'">
+                <input type="password" class="form-control" id="inputPassword" v-model="registerData.password" required  :class="referenceData.formValidCheck ? (referenceData.passwordValid ? 'is-valid' : 'is-invalid') : ''">
                 <div id="validationServer03Feedback" class="invalid-feedback">
-                    8 ~ 16자 영문, 숫자 조합
+                    문자, 숫자, 특수문자를 하나 이상 사용한 8자 이상
                 </div>
             </div>
+            <div class="form-text" v-if="!referenceData.formValidCheck">문자, 숫자, 특수문자를 하나 이상 사용한 8자 이상</div>
         </div>
 
         <div class="mb-3">
             <label for="inputPasswordCheck" class="form-label text-sm">비밀번호 확인</label>
             <div class="input-group has-validation">
-                <input type="password" class="form-control" id="inputPasswordCheck" v-model="referenceData.passwordCheck" required  :class="referenceData.passwordCheckValid ? 'is-valid' : 'is-invalid'">
+                <input type="password" class="form-control" id="inputPasswordCheck" v-model="referenceData.passwordCheck" required  :class="referenceData.formValidCheck ? (referenceData.passwordCheckValid ? 'is-valid' : 'is-invalid') : ''">
             </div>
         </div>
 
@@ -68,18 +70,18 @@
             <label for="inputCoupleId" class="form-label text-sm">
                 커플 ID
             </label>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3" v-show="!referenceData.hasCoupleId">
                 
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control" placeholder="상대방의 ID를 입력해주세요." v-model="referenceData.findCoupleId" v-bind:disabled="referenceData.coupleIdValid" :class="referenceData.coupleIdValid ? 'is-valid' : 'is-invalid'">
+                    <input type="text" class="form-control" placeholder="상대방의 ID를 입력해주세요." v-model="referenceData.findCoupleId" v-bind:disabled="referenceData.coupleIdValid" :class="referenceData.formValidCheck ? (referenceData.coupleIdValid ? 'is-valid' : 'is-invalid') : ''" :required="!hasCoupleId">
                     <button class="btn btn-secondary cdiary-bg-color border-0" type="button" id="inputCoupleId" data-bs-toggle="modal" data-bs-target="#exampleModal" v-bind:disabled="referenceData.coupleIdValid || referenceData.findCoupleId.length <= 0" @click="findCoupleId()">
                         <i class="fa fa-search"></i>
                     </button>
                     <div id="validationServer03Feedback" class="invalid-feedback">
-                        연결하려는 상대방 ID를 입력해주세요.
+                        연결하려는 상대방 ID를 입력 후 검색 버튼을 눌러주세요.
                     </div>
                 </div>
-                
+                <div class="form-text" v-if="!referenceData.formValidCheck">연결하려는 상대방 ID를 입력 후 검색 버튼을 눌러주세요.</div>
             </div>
 
             <div class="form-check form-switch">
@@ -160,6 +162,7 @@ export default {
             passwordCheck: '',
             hasCoupleId: false,
 
+            formValidCheck : false,
             idValid: false,
             passwordValid: false,
             passwordCheckValid: false,
@@ -187,7 +190,7 @@ export default {
 
         // Password Watch
         watch(() => registerData.password, (newValue) => {
-            const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
+            const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
             if(!regExp.test(newValue)) {
                 referenceData.passwordValid = false;
                 return;
@@ -208,6 +211,7 @@ export default {
 
         // 회원가입 Function
         const register = async () => {
+            referenceData.formValidCheck = true;
             if(!referenceData.idValid || !referenceData.passwordValid || !referenceData.passwordCheckValid || !referenceData.coupleIdValid) {
                 notify({type: 'error', text: '입력폼을 다시 한번 더 확인해주세요.'});
                 return;
