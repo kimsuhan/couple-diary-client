@@ -39,7 +39,6 @@
 <script>
 import { reactive } from 'vue'
 import axios from '@/utils/axios.js';
-import { notify } from "@kyvg/vue3-notification";
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
@@ -61,12 +60,6 @@ export default {
                     router.push({
                         name: 'home',
                     })
-                }
-            }).catch((e) => {
-                if(e.response.data && e.response.data.message) {
-                    notify({type: 'error', text: e.response.data.message});
-                } else {
-                    notify({type: 'error', text: e.message});
                 }
             });
         }
