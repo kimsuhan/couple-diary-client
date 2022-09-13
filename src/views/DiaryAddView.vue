@@ -2,21 +2,6 @@
 
 </style>
 <template>
-    <Transition>
-        <div class="fixed flex justify-center h-screen w-full left-0 right-0 bottom-0 " style="z-index:999999; background-color: rgba(0, 0, 0, 0.5);" v-show="popupShow === true" @click="fn_closePopup()">
-            <div class="flex flex-wrap bg-white w-[300px] h-[300px] rounded-3xl self-center border-gray-300 border-solid border-2 drop-shadow-lg">
-                <div class="success-checkmark self-center">
-                    <div class="check-icon mt-3">
-                        <span class="icon-line line-tip"></span>
-                        <span class="icon-line line-long"></span>
-                        <div class="icon-circle"></div>
-                        <div class="icon-fix"></div>
-                    </div>
-                </div>
-                <p class="w-full text-center text-2xl"> 성공적으로 저장 됬어요! </p>
-            </div>
-        </div>
-    </Transition>
     
     <input ref="fileInput" class="form-control hidden" type="file" id="formFile" multiple='multiple' accept='image/*' v-on:change="fn_pickFile(this.$refs.fileInput.files)"/>
     <div class="h-[50px] bg-white flex shadow-sm fixed top-0 w-screen items-center justify-center" style="z-index: 999998;">
@@ -25,7 +10,7 @@
         </router-link>
         <a class="absolute left-0 pl-4 text-blue-500" @click="displayStep = 'photo'" v-show="displayStep === 'input'"> 사진편집 </a>
         <div class="text-center">
-            <div>다이어리 등록</div>
+            <div>다이어리 {{saveMode === 'update' ? '수정' : '등록'}}</div>
         </div>
         <a class="absolute right-0 pr-4 text-blue-500" @click="fn_showInputStep()" v-show="displayStep === 'photo'"> 다음 </a>
         <a class="absolute right-0 pr-4 text-blue-500" v-show="displayStep === 'input'" @click="this.$refs.submitButton.click()"> 완료 </a>
@@ -33,18 +18,18 @@
     <div class="px-4 pt-[70px] flex flex-wrap gap-3 w-screen justify-center" v-show="displayStep === 'photo'">
 
         <!-- 사진 Preview -->
-        <div class="relative h-[140px] w-[110px] flex items-center justify-center" v-for="item in images" v-bind:key="item.idx">
+        <div class="relative h-[140px] w-[100px] flex items-center justify-center" v-for="item in images" v-bind:key="item.idx">
             <div class="absolute top-0 left-0 bg-green-500 rounded-full h-5 w-5 flex justify-center items-center" v-show="item.main">
                 <i class="fa fa-check text-white text-xs"></i>
             </div>
-            <img class="h-[130px] w-[100px] object-cover" :src="item.preivew" @click="fn_setMainImage(item.idx)"/>
+            <img class="h-[130px] w-[90px] object-cover" :src="item.preivew" @click="fn_setMainImage(item.idx)"/>
             <div class="absolute bottom-0 right-0 bg-red-500 rounded-full h-5 w-5 flex justify-center items-center" @click="fn_removeImage(item.idx)">
                 <i class="fa fa-minus text-white text-xs"></i>
             </div>
         </div>
         
         <!-- 사진 등록용 -->
-        <div class="h-[140px] w-[110px] bg-gray-600 flex items-center justify-center border-gray-400" @click="this.$refs.fileInput.click()">
+        <div class="h-[140px] w-[100px] bg-gray-600 flex items-center justify-center border-gray-400" @click="this.$refs.fileInput.click()">
             <i class="fa fa-circle-plus text-5xl text-gray-400"></i>
         </div>
         <div class="card">
@@ -75,8 +60,7 @@
 <script>
 import { reactive, ref } from 'vue'
 import axios from '@/utils/axios.js';
-import { notify } from "@kyvg/vue3-notification";
-import { useRouter } from 'vue-router'
+import alert from '@/utils/alert';
 
 export default {
     name: 'DiaryAddView',
@@ -84,10 +68,8 @@ export default {
         diaryId: String,
     },
     setup(props) {
-        const router = useRouter();
         const displayStep = ref('photo'); // 화면 스탭용
         const images = reactive([]);
-        const popupShow = ref(false);
         const saveMode = ref();
         let fileIdx = ref(0);
         let mainIdx = ref(0);
@@ -98,7 +80,7 @@ export default {
             content:'',
         });
 
-        if(props.diaryId) {
+        if(props.diaryId) { // 수정
             axios.getData(`/v1/diary/${props.diaryId}`).then((data) => {
                 // 사진 처리
                 for(const photo of data.data.diary.photos) {
@@ -122,19 +104,21 @@ export default {
 
             saveMode.value = 'update';
         }
-        else {
-            console.log('insert');
+        else { // 신규 등록
             saveMode.value = 'insert';
         }
 
         // 사진 Upload Function
         const fn_pickFile = (file) => {
             for(const image of file) {
+                const sizeInMB = (image.size / (1024*1024)).toFixed(2);
+
                 const data = {
                     idx: fileIdx.value++,
                     file: image,
                     preivew: URL.createObjectURL(image),
                     main: false,
+                    size: sizeInMB
                 }
 
                 images.push(data);
@@ -169,7 +153,18 @@ export default {
         // 사진 편집 -> 인풋으로 넘어가기 위한 과정
         const fn_showInputStep = () => {
             if(images.length === 0) {
-                notify({type: 'error', text: '사진을 먼저 선택해주세요!'});
+                alert.showError(`사진을 먼저 선택해주세요!`)
+                return;
+            }
+
+            // File Size Checker
+            let totalSize = 0.0;
+            for(const image of images) {
+                totalSize += parseFloat(image.size);
+            }
+
+            if(totalSize >= 500) {
+                alert.showError(`전체 사진의 용량이 ${totalSize.toFixed(2)}MB 로 너무 커요. 500MB 아래로 줄여주세요.`)
                 return;
             }
 
@@ -184,7 +179,6 @@ export default {
                 formData.append("image", file);
             }
 
-            // formData.append('image',viewData.image);
             formData.append('title',diaryData.title);
             formData.append('content',diaryData.content);
             formData.append('date',diaryData.date);
@@ -195,18 +189,11 @@ export default {
 
             axios.postData('/v1/diary/save', formData).then(response => {
                 if(response.status === 201) {
-                    popupShow.value = true;
+                    alert.showSuccess('성공적으로 저장 됬어요 👌', 'home');
                 }
             });
         }
 
-        const fn_closePopup = () => {
-            router.push({
-                name: 'home',
-            })
-        }
-
-        //
         const convertURLtoFile = async (url) => {
             const response = await fetch(url);
             const data = await response.blob();
@@ -219,13 +206,12 @@ export default {
             displayStep,
             images,
             diaryData,
-            popupShow,
+            saveMode,
             fn_setMainImage,
             fn_removeImage,
             fn_pickFile,
             fn_showInputStep,
             fn_saveDiary,
-            fn_closePopup,
          }
       }
    }

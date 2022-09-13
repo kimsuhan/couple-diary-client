@@ -17,8 +17,10 @@ export const Diary = {
     },
     actions: {
         getServerData(context) {
-            axios.getData('/v1/diary').then((data) => {
-                context.commit('setData', data.data);
+            axios.getData('/v1/diary', [], true).then((response) => {
+                if(response) {
+                    context.commit('setData', response.data);
+                }
             });
         }
     }

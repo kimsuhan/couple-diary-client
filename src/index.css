@@ -34,6 +34,10 @@ body {
     background-color: var(--main-bg-color);
 }
 
+.cdiary-border-color {
+    border-color: var(--main-bg-color);
+}
+
 .cdiary-font-family {
     font-family: 'Cinzel', serif;
 }

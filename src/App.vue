@@ -1,4 +1,5 @@
 <template>
+<AlertComponent/>
 <div>
     <router-view></router-view>
 </div>
@@ -8,11 +9,13 @@
 
 <script>
 import NavBar from '@/components/NavBar';
+import AlertComponent from '@/components/AlertComponent.vue';
 
 export default {
     name: 'App',
     components: {
-        NavBar
+        NavBar,
+        AlertComponent,
     },
     methods: {
         navShow : (currentPath) => {

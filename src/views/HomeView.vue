@@ -33,7 +33,7 @@
 import PreviewCard from '@/components/PreviewCard.vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { notify } from "@kyvg/vue3-notification";
+// import { notify } from "@kyvg/vue3-notification";
 
 export default {
     name: 'HomeView',
@@ -44,12 +44,8 @@ export default {
         const store = useStore();
         let diaryData = computed(() => store.getters['Diary/getData']);
 
-        const getDiaryData = (type) => {
+        const getDiaryData = () => {
             store.dispatch("Diary/getServerData");
-
-            if(type === 'click') {
-                notify({type: 'success', text: '데이터를 불러왔어요.'});
-            }
         }
 
         getDiaryData('onload');

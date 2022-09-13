@@ -3,7 +3,8 @@ import store from '@/store';
 import { computed } from 'vue';
 import httpStatus from 'http-status';
 import { useRouter } from 'vue-router'
-import { notify } from "@kyvg/vue3-notification";
+// import { notify } from "@kyvg/vue3-notification";
+import alert from './alert';
 
 const setAuthToken = (header) => {
     if(!header) {
@@ -19,25 +20,20 @@ const setAuthToken = (header) => {
 }
 
 const dataUtils = {
-    postData(url, body, header){
+    async postData(url, body, header){
         header = setAuthToken(header);
-        axios.defaults.baseURL = process.env.VUE_APP_DEFAULT_URL;
 
-        return new Promise((resolve, reject) => {
-            axios({
-                url: url,
-                method: 'POST',
-                data: body,
-                headers: header,
-            }).then(data => resolve(data))
-            .catch((err) =>{
-                reject(err)
-            });
+        const data = await this.sendData({
+            url: url,
+            method: 'POST',
+            data: body,
+            headers: header
         });
+
+        return data;
     },
     putData(url, body, header){
         header = setAuthToken(header);
-        axios.defaults.baseURL = process.env.VUE_APP_DEFAULT_URL;
 
         return new Promise((resolve, reject) => {
             axios({
@@ -48,48 +44,63 @@ const dataUtils = {
             }).then(data => resolve(data)).catch(err => reject(err));
         });
     },
-    async getData(url, param, header) {
+    async getData(url, param, alertSimple) {
         const data = await this.sendData({
             url: url,
             method: "GET",
             params: param,
-            headers: header
-        });
+        }, alertSimple);
 
         return data;
     },
 
-    async sendData(axiosOption) {
+    async sendData(axiosOption, simple) {
+        // Alert 이 보일때에는 Request를 보내지 않음.
+        const alertShow = computed(() => store.getters['Alert/getShow']);
+        if(alertShow.value) {
+            return;
+        }
+
+        simple ? alert.showSimple() : alert.showLoading();
+
+        // Axios Deafult Setting
+        axios.defaults.baseURL = process.env.VUE_APP_DEFAULT_URL;
 
         // Auth Token Setting
         axiosOption.headers = setAuthToken(axiosOption.headers);
 
-        // axios default Setting
-        axios.defaults.baseURL = process.env.VUE_APP_DEFAULT_URL;
+        let returnData = {
+            data: undefined,
+            status: 0
+        };
 
-        return new Promise((resolve, reject) => {
-            axios(axiosOption).then((data) => {
-                resolve(data)
-            })
-            .catch((e) => {
+        try {
+            returnData = await axios(axiosOption);
+            alert.hideAlert();
+        }
+        catch (e) {
+            returnData = e.response;
+            let errorMessage;
+
+            // 토큰 만료시 login Router 이동
+            if(e.response.status === httpStatus.UNAUTHORIZED) {
                 const router = useRouter();
 
-                // 토큰 만료시 login Router 이동
-                if(e.response.status === httpStatus.UNAUTHORIZED) {
-                    store.dispatch("Auth/setAuthToken", undefined);
-                    router.push({
-                        name: 'login',
-                    });
-                }
-                else if(e.response.data && e.response.data.message) {
-                    notify({type: 'error', text: e.response.data.message});
-                } else {
-                    notify({type: 'error', text: e.message});
-                }
+                store.dispatch("Auth/setAuthToken", undefined);
+                router.push({
+                    name: 'login',
+                });
+            }
+            else if(e.response.data && e.response.data.message) {
+                errorMessage = e.response.data.message;
+            } else {
+                errorMessage = e.message;
+            }
 
-                reject(e);
-            });
-        });
+            alert.showError(errorMessage);
+        }
+
+        return returnData;
     }
 }
 

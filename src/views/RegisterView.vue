@@ -1,21 +1,5 @@
 <template>
-    <Transition>
-        <div class="fixed flex justify-center h-screen w-full left-0 right-0 bottom-0 " style="z-index:999999; background-color: rgba(0, 0, 0, 0.5);" v-show="popupShow === true" @click="routerMove()">
-            <div class="flex flex-wrap bg-white w-[300px] h-[300px] rounded-3xl self-center border-gray-300 border-solid border-2 drop-shadow-lg">
-                <div class="success-checkmark self-center">
-                    <div class="check-icon mt-3">
-                        <span class="icon-line line-tip"></span>
-                        <span class="icon-line line-long"></span>
-                        <div class="icon-circle"></div>
-                        <div class="icon-fix"></div>
-                    </div>
-                </div>
-                <p class="w-full text-center text-2xl"> 등록되었습니다. </p>
-            </div>
-        </div>
-    </Transition>
-
-    <div class="h-[50px] bg-white flex shadow-sm fixed top-0 w-screen items-center justify-center" style="z-index: 999999;">
+    <div class="h-[50px] bg-white flex shadow-sm fixed top-0 w-screen items-center justify-center" style="z-index: 999;">
         <router-link to="login" class="absolute left-0 pl-4" ref="backButton">
             <i class="fa fa-chevron-left"></i>
         </router-link>
@@ -25,7 +9,7 @@
         </div>
     </div>
 
-    <form class="bg-white h-screen px-4 pt-[70px]" @submit.prevent="register">
+    <form class="bg-white px-4 pt-[70px]" @submit.prevent="register">
         <div class="mb-3">
             <label for="inputID" class="form-label text-sm">아이디</label>
             <div class="input-group has-validation">
@@ -72,7 +56,7 @@
             <div class="input-group mb-3" v-show="!referenceData.hasCoupleId">
                 
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control" placeholder="상대방의 ID를 입력해주세요." v-model="referenceData.findCoupleId" v-bind:disabled="referenceData.coupleIdValid" :class="referenceData.formValidCheck ? (referenceData.coupleIdValid ? 'is-valid' : 'is-invalid') : ''" :required="!hasCoupleId">
+                    <input type="text" class="form-control" placeholder="상대방의 ID를 입력해주세요." v-model="referenceData.findCoupleId" v-bind:disabled="referenceData.coupleIdValid" :class="referenceData.formValidCheck ? (referenceData.coupleIdValid ? 'is-valid' : 'is-invalid') : ''" :required="!referenceData.hasCoupleId">
                     <button class="btn btn-secondary cdiary-bg-color border-0" type="button" id="inputCoupleId" data-bs-toggle="modal" data-bs-target="#exampleModal" v-bind:disabled="referenceData.coupleIdValid || referenceData.findCoupleId.length <= 0" @click="findCoupleId()">
                         <i class="fa fa-search"></i>
                     </button>
@@ -90,7 +74,7 @@
         </div>
 
         <div class="input-group mt-5">
-            <button class="form-control btn btn-secondary border-0 cdiary-bg-color" type="submit"> 회원가입 </button>
+            <button class="form-control btn btn-danger border-0 cdiary-bg-color" type="submit"> 회원가입 </button>
         </div>
     </form>
 
@@ -133,20 +117,16 @@
 </template>
 
 <script>
-import { reactive, watch, ref } from 'vue'
+import { reactive, watch } from 'vue'
 import { notify } from "@kyvg/vue3-notification";
 import axios from '@/utils/axios.js';
-import { useRouter } from 'vue-router'
+import alert from '@/utils/alert';
 
 export default {
     name: 'RegisterView',
     components: {
     },
     setup() {
-        const router = useRouter();
-
-        const popupShow = ref(false);
-
         // 회원가입 데이터
         const registerData = reactive({
             id: '',
@@ -189,6 +169,8 @@ export default {
 
         // Password Watch
         watch(() => registerData.password, (newValue) => {
+            referenceData.passwordCheck = '';
+
             const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
             if(!regExp.test(newValue)) {
                 referenceData.passwordValid = false;
@@ -222,7 +204,7 @@ export default {
             
             await axios.postData('/v1/user/register', registerData).then(response => {
                 if(response.status === 201) {
-                    popupShow.value = true;
+                    alert.showSuccess('가입해주셔서 고마워요 😍', 'login');
                 }
             }).catch((e) => {
                 if(e.response.data && e.response.data.message) {
@@ -283,12 +265,6 @@ export default {
             }
         }
 
-        const routerMove = () => {
-            router.push({
-                name: 'login',
-            })
-        }
-
         return {
             registerData,
             referenceData,
@@ -296,8 +272,6 @@ export default {
             checkHasCoupleId,
             findCoupleId,
             setCoupleData,
-            popupShow,
-            routerMove,
         }
     }
 }
