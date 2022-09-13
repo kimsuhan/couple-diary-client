@@ -138,8 +138,9 @@
 </template>
 <!-- {{diaryData.date.substr(0, 10)}} -->
 <script>
-    import axios from '@/utils/axios.js';
-    import { ref } from 'vue'
+import axios from '@/utils/axios.js';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'DiaryView',
@@ -147,6 +148,7 @@ export default {
         diaryId: String,
     },
     setup(props) {
+        const router = useRouter();
         let diaryData = ref({});
         let photoData = ref([]);
         let photoIndex = ref(0);
@@ -162,6 +164,11 @@ export default {
                         maxheight.value = data.height;
                     }
                 }
+            });
+        }
+        else {
+            router.push({
+                name: 'home',
             });
         }
 
