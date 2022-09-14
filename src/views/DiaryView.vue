@@ -92,13 +92,12 @@
             ...
         </button>
         <ul class="dropdown-menu">
-            
             <li>
                 <router-link :to="{ name: 'add', params: { diaryId: diaryId }}" class="dropdown-item">
                     수정
                 </router-link>
             </li>
-            <li><a class="dropdown-item text-red-500">삭제 (개발중)</a></li>
+            <li><a class="dropdown-item text-red-500" @click="_remove()">삭제</a></li>
         </ul>
         </div>
     </div>
@@ -136,11 +135,11 @@
         </div>
     </section>
 </template>
-<!-- {{diaryData.date.substr(0, 10)}} -->
 <script>
 import axios from '@/utils/axios.js';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
+import alert from '@/utils/alert';
 
 export default {
     name: 'DiaryView',
@@ -152,17 +151,17 @@ export default {
         let diaryData = ref({});
         let photoData = ref([]);
         let photoIndex = ref(0);
-        let maxheight = ref(0);
 
         if(props.diaryId) {
             axios.getData(`/v1/diary/${props.diaryId}`).then((data) => {
-                diaryData.value = data.data.diary;
-                photoData.value = data.data.diary.photos;
-
-                for(const data of photoData.value) {
-                    if(data.height > maxheight.value) {
-                        maxheight.value = data.height;
-                    }
+                if(data) {
+                    diaryData.value = data.data;
+                    photoData.value = data.data.photos;
+                }
+                else {
+                    router.push({
+                        name: 'home',
+                    });
                 }
             });
         }
@@ -172,11 +171,18 @@ export default {
             });
         }
 
+        const _remove = async () => {
+            const data = await axios.deleteData(`/v1/diary/${props.diaryId}`);
+            if(data && data.status === 205) {
+                alert.showSuccess('성공적으로 삭제 됬어요 👌', 'home');
+            }
+        }
+
         return {
             diaryData,
             photoData,
             photoIndex,
-            maxheight
+            _remove
         }
       }
    }

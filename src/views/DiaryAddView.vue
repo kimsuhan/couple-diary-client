@@ -83,7 +83,7 @@ export default {
         if(props.diaryId) { // 수정
             axios.getData(`/v1/diary/${props.diaryId}`).then((data) => {
                 // 사진 처리
-                for(const photo of data.data.diary.photos) {
+                for(const photo of data.data.photos) {
                     convertURLtoFile(`/v1/file/${photo.src}`).then((image) => {
                         const data = {
                             idx: fileIdx.value++,
@@ -97,9 +97,9 @@ export default {
                     });
                 }
 
-                diaryData.title = data.data.diary.title;
-                diaryData.date = data.data.diary.date.substr(0, 10);
-                diaryData.content = data.data.diary.content;
+                diaryData.title = data.data.title;
+                diaryData.date = data.data.date.substr(0, 10);
+                diaryData.content = data.data.content;
             });
 
             saveMode.value = 'update';

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import store from '@/store';
+import router from '@/router';
 import { computed } from 'vue';
 import httpStatus from 'http-status';
-import { useRouter } from 'vue-router'
-// import { notify } from "@kyvg/vue3-notification";
 import alert from './alert';
 
 const setAuthToken = (header) => {
@@ -21,8 +20,6 @@ const setAuthToken = (header) => {
 
 const dataUtils = {
     async postData(url, body, header){
-        header = setAuthToken(header);
-
         const data = await this.sendData({
             url: url,
             method: 'POST',
@@ -32,17 +29,14 @@ const dataUtils = {
 
         return data;
     },
-    putData(url, body, header){
-        header = setAuthToken(header);
-
-        return new Promise((resolve, reject) => {
-            axios({
-                url: process.env.VUE_APP_DEFAULT_URL + url,
-                method: 'PUT',
-                data: body,
-                headers: header,
-            }).then(data => resolve(data)).catch(err => reject(err));
+    async deleteData(url, body){
+        const data = await this.sendData({
+            url: url,
+            method: 'DELETE',
+            data: body,
         });
+
+        return data;
     },
     async getData(url, param, alertSimple) {
         const data = await this.sendData({
@@ -84,12 +78,9 @@ const dataUtils = {
 
             // 토큰 만료시 login Router 이동
             if(e.response.status === httpStatus.UNAUTHORIZED) {
-                const router = useRouter();
-
-                store.dispatch("Auth/setAuthToken", undefined);
-                router.push({
-                    name: 'login',
-                });
+                errorMessage = '로그인 정보가 만료되었습니다.';
+                await store.dispatch("Auth/setAuthToken", undefined);
+                await router.push('login')
             }
             else if(e.response.data && e.response.data.message) {
                 errorMessage = e.response.data.message;

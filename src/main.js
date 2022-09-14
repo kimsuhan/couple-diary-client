@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import axios from '@/utils/axios'
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -17,19 +18,16 @@ import 'v-calendar/dist/style.css';
 import Notifications from '@kyvg/vue3-notification'
 
 // Axios
-import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3000';
 
 // vuex store
 import store from './store';
 
 const app = createApp(App);
-app.config.globalProperties.axios = axios;
 app.use(router);
 app.use(VCalendar);
 app.use(Notifications);
 app.use(store);
-// app.use(axios);
+app.use(axios);
 app.mount('#app');
 
 // createApp(App)
