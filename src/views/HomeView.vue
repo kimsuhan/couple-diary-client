@@ -23,7 +23,15 @@
         </button>
     </div>
     <section class="px-3 py-2 bg-white">
-        <div class="grid grid-cols-3 gap-1 pb-[65px] pt-[50px]">
+        <div class="flex h-screen justify-center items-center" v-if="diaryData.length === 0">
+            <div class="border-[1px] rounded w-4 h-4 border-black items-center justify-center flex mr-0.5">
+                <i class="fa fa-plus text-xs"></i>
+            </div>
+            <p>
+                버튼을 클릭해서 다이어리를 등록해보세요.
+            </p>
+        </div>
+        <div class="grid grid-cols-3 gap-1 pb-[65px] pt-[50px]" v-if="diaryData.length > 0">
             <PreviewCard :diary="item" v-for="item in diaryData" v-bind:key="item._id"></PreviewCard>
         </div>
     </section>

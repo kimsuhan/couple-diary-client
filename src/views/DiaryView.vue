@@ -97,7 +97,7 @@
                     수정
                 </router-link>
             </li>
-            <li><a class="dropdown-item text-red-500" @click="_remove()">삭제</a></li>
+            <li><a class="dropdown-item text-red-500" @click="remove()">삭제</a></li>
         </ul>
         </div>
     </div>
@@ -171,7 +171,7 @@ export default {
             });
         }
 
-        const _remove = async () => {
+        const remove = async () => {
             const data = await axios.deleteData(`/v1/diary/${props.diaryId}`);
             if(data && data.status === 205) {
                 alert.showSuccess('성공적으로 삭제 됬어요 👌', 'home');
@@ -182,7 +182,7 @@ export default {
             diaryData,
             photoData,
             photoIndex,
-            _remove
+            remove
         }
       }
    }
