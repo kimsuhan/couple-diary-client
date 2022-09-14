@@ -77,14 +77,44 @@
         from {opacity: .4}
         to {opacity: 1}
     }
+
+    .top-alert {
+        animation-name: top-alert;
+        animation-duration: 1s;
+        top:15px;
+    }
+
+    @keyframes top-alert {
+        from{
+            top:0;
+            opacity: .4;
+        }
+        to{
+            top:15px;
+            opacity: 1;
+        }
+    }
+
+
 </style>
 <template>
+    <div class="fixed w-screen flex flex-col items-center" style="z-index: 99999999;" :class="showConfirm ? 'top-alert' : 'hidden'" @click="showConfirm = false">
+        <div class="h-[70px] bg-white shadow-md rounded-full flex flex-row items-center mx-3 border">
+            <div class="grow px-3 text-sm mr-20"> 정말 삭제하실거에요? </div>
+            <button class="mx-2 btn btn-primary text-xs" @click="remove()">네</button>
+            <button class="mr-4 btn btn-danger text-xs" @click="showConfirm = false">아니오</button>
+        </div>
+
+        <div class="progress h-0.5 w-[300px] mb-1">
+            <div class="progress-bar bg-danger" role="progressbar" aria-label="Danger example" :style="`width: ${confirmSecond}%`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
     <div class="h-[50px] bg-white flex flex-row items-center shadow-sm fixed top-0 w-screen" style="z-index: 9999999;">
         <div class="flex-none px-3" @click="$router.go(-1)">
             <i class="fa fa-chevron-left"></i>
         </div>
         <div class="flex-1 grow text-center">
-            <div class="text-xs text-gray-400 font-bold">김수한</div>
+            <div class="text-xs text-gray-400 font-bold">이름(TODO)</div>
             <div class="">{{diaryData.title}}</div>
         </div>
         <div class="dropdown">
@@ -97,7 +127,7 @@
                     수정
                 </router-link>
             </li>
-            <li><a class="dropdown-item text-red-500" @click="remove()">삭제</a></li>
+            <li><a class="dropdown-item text-red-500" @click="fnShowConfirm()">삭제</a></li>
         </ul>
         </div>
     </div>
@@ -151,6 +181,8 @@ export default {
         let diaryData = ref({});
         let photoData = ref([]);
         let photoIndex = ref(0);
+        let confirmSecond = ref(100);
+        let showConfirm = ref(false);
 
         if(props.diaryId) {
             axios.getData(`/v1/diary/${props.diaryId}`).then((data) => {
@@ -178,11 +210,29 @@ export default {
             }
         }
 
+        const fnShowConfirm = async () => {
+            showConfirm.value = true;
+            confirmSecond.value = 100;
+            const animate = () => {
+                if(confirmSecond.value == 0) {
+                    clearInterval(loading);
+                    showConfirm.value = false;
+                } else {
+                    confirmSecond.value = confirmSecond.value - 1;
+                }
+            }
+
+            const loading = setInterval(animate, 100);
+        }
+
         return {
             diaryData,
             photoData,
             photoIndex,
-            remove
+            remove,
+            showConfirm,
+            confirmSecond,
+            fnShowConfirm
         }
       }
    }
