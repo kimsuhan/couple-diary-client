@@ -81,10 +81,10 @@ export default {
         });
 
         if(props.diaryId) { // 수정
-            axios.getData(`/v1/diary/${props.diaryId}`).then((data) => {
+            axios.getData(`/v1/diary/${props.diaryId}`).then(async (data) => {
                 // 사진 처리
                 for(const photo of data.data.photos) {
-                    convertURLtoFile(`/v1/file/${photo.src}`).then((image) => {
+                    await convertURLtoFile(`/v1/file/${photo.src}`).then((image) => {
                         const data = {
                             idx: fileIdx.value++,
                             file: image,
